@@ -1,6 +1,6 @@
 # Scala and sbt Dockerfile
 
-[Scala](http://www.scala-lang.org) and [sbt](http://www.scala-sbt.org) container.
+[Scala](http://www.scala-lang.org), [sbt](http://www.scala-sbt.org) and [git](https://git-scm.com/) container.
 
 Useful for building in environments like CircleCI v2.
 
@@ -13,24 +13,71 @@ Useful for building in environments like CircleCI v2.
 ## Installation ##
 
 1. Install [Docker](https://www.docker.com)
-2. Pull [automated build](https://hub.docker.com/r/spikerlabs/scala-sbt/) from public [Docker Hub Registry](https://hub.docker.com):
-3. See [tags](https://hub.docker.com/r/spikerlabs/scala-sbt/tags/) for built specific versions (not the latest ones)
+2. Pull [automated build](https://hub.docker.com/r/codestar/circleci-scala-sbt-git/) from public [Docker Hub Registry](https://hub.docker.com):
+3. See [tags](https://hub.docker.com/r/codestar/circleci-scala-sbt-git/tags/) for built specific versions (not the latest ones)
 ```
-docker pull spikerlabs/scala-sbt
+docker pull codestar/circleci-scala-sbt-git
 ```
 Alternatively, you can build an image from Dockerfile:
 ```
-docker build -t scala-sbt github.com/spikerlabs/scala-sbt
+docker build -t circleci-scala-sbt-git github.com/codestar/circleci-scala-sbt-git
 ```
 Or with specific versions:
 ```
-docker build -t scala-sbt --build-arg SCALA_VERSION=2.12.1 --build-arg SBT-VERSION=0.13.15 github.com/spikerlabs/scala-sbt
+docker build \
+  -t circleci-scala-sbt-git \
+  --build-arg SCALA_VERSION=2.12.2 \
+  --build-arg SBT-VERSION=0.13.15 \
+  github.com/codestar/circleci-scala-sbt-git
 ```
 
 ## Usage ##
 
 ```
 docker run -it --rm spikerlabs/scala-sbt /bin/bash
+```
+
+### Example .circleci/config.yml:
+
+```
+version: 2
+jobs:
+  build:
+    working_directory: ~/my-project
+    docker:
+      - image: codestar/circleci-scala-sbt-git:scala-2.12.2-sbt-0.13.15
+    steps:
+      - checkout
+
+      - restore_cache:
+          keys:
+            - my-project-{{ checksum "project/build.sbt" }}-{{ checksum "build.sbt" }}
+            - my-project
+
+      - run: sbt compile test:compile
+
+      - save_cache:
+          key: my-project-{{ checksum "project/build.sbt" }}-{{ checksum "build.sbt" }}
+          paths:
+            - target/resolution-cache
+            - target/streams
+            - project/target/resolution-cache
+            - project/target/streams
+            - ~/.sbt
+            - ~/.iv2/cache
+            - ~/.m2
+      - save_cache:
+          # Changing this to a different key is the only way to remove old dependencies from the cache
+          key: my-project
+          paths:
+            - ~/.sbt
+            - ~/.iv2/cache
+            - ~/.m2
+
+      - run: sbt test
+
+      - store_test_results:
+          path: target/test-reports
 ```
 
 
@@ -43,4 +90,4 @@ Contributions via GitHub pull requests are gladly accepted from their original a
 
 This code is open source software licensed under the [Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0.html).
 
-This is forked repository with optimisations on top of original [hseeberger/scala-sbt](https://github.com/hseeberger/scala-sbt).
+This fork is based on [spikerlabs/scala-sbt](https://github.com/spikerlabs/scala-sbt) and [hseeberger/scala-sbt](https://github.com/hseeberger/scala-sbt).

@@ -1,7 +1,7 @@
 #
 # Scala and sbt Dockerfile
 #
-# https://github.com/spikerlabs/scala-sbt (based on https://github.com/hseeberger/scala-sbt)
+# https://github.com/code-star/circleci-scala-sbt-git (based on https://github.com/spikerlabs/scala-sbt)
 #
 
 # Pull base image
@@ -14,17 +14,25 @@ ENV SCALA_VERSION ${SCALA_VERSION:-2.12.2}
 ENV SBT_VERSION ${SBT_VERSION:-0.13.15}
 
 RUN \
-  echo "$SCALA_VERSION $SBT_VERSION" && \
+  echo "building docker image for scala $SCALA_VERSION sbt $SBT_VERSION"
+
+RUN \
+  echo "Setting up JDK and base system" && \
   mkdir -p /usr/lib/jvm/java-1.8-openjdk/jre && \
   touch /usr/lib/jvm/java-1.8-openjdk/jre/release && \
   apk add --no-cache bash && \
   apk add --no-cache curl && \
+  apk add --no-ache git
+
+RUN \
+  echo "Downloading and setting up Scala $SCALA_VERSION" && \
   curl -fsL http://downloads.typesafe.com/scala/$SCALA_VERSION/scala-$SCALA_VERSION.tgz | tar xfz - -C /usr/local && \
   ln -s /usr/local/scala-$SCALA_VERSION/bin/* /usr/local/bin/ && \
   scala -version && \
   scalac -version
 
 RUN \
+  echo "Downloading and setting up SBT ${SBT_VERSION}" && \
   curl -fsL http://dl.bintray.com/sbt/native-packages/sbt/$SBT_VERSION/sbt-$SBT_VERSION.tgz | tar xfz - -C /usr/local && \
   $(mv /usr/local/sbt-launcher-packaging-$SBT_VERSION /usr/local/sbt || true) \
   ln -s /usr/local/sbt/bin/* /usr/local/bin/ && \
