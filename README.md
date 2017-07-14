@@ -54,7 +54,10 @@ jobs:
             - my-project-{{ checksum "project/build.sbt" }}-{{ checksum "build.sbt" }}
             - my-project
 
-      - run: sbt compile test:compile
+      - run:
+          # TODO: For some reason circleci gets stuck in the shell if we don't add exit to sbt
+          command:
+            sbt compile test:compile exit
 
       - save_cache:
           key: my-project-{{ checksum "project/build.sbt" }}-{{ checksum "build.sbt" }}
@@ -67,14 +70,16 @@ jobs:
             - ~/.iv2/cache
             - ~/.m2
       - save_cache:
-          # Changing this to a different key is the only way to remove old dependencies from the cache
+          # Changing this to a different key is the only way to remove old dependencies from the cache and/or generate a more up-to-date cache
           key: my-project
           paths:
             - ~/.sbt
             - ~/.iv2/cache
             - ~/.m2
 
-      - run: sbt test
+      - run:
+          command:
+            sbt test exit
 
       - store_test_results:
           path: target/test-reports
