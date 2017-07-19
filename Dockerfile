@@ -22,7 +22,8 @@ RUN \
   touch /usr/lib/jvm/java-1.8-openjdk/jre/release && \
   apk add --no-cache bash && \
   apk add --no-cache curl && \
-  apk add --no-cache git
+  apk add --no-cache git && \
+  apk add --no-cache openssh-client
 
 RUN \
   echo "Downloading and setting up Scala $SCALA_VERSION" && \
