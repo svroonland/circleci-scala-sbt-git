@@ -26,9 +26,9 @@ Or with specific versions:
 ```
 docker build \
   -t circleci-scala-sbt-git \
-  --build-arg SCALA_VERSION=2.12.2 \
-  --build-arg SBT-VERSION=0.13.15 \
-  github.com/codestar/circleci-scala-sbt-git
+  --build-arg SCALA_VERSION=2.12.3 \
+  --build-arg SBT_VERSION=0.13.15 \
+  github.com/code-star/circleci-scala-sbt-git
 ```
 
 ## Usage ##
