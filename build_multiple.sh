@@ -5,7 +5,6 @@ scala_versions=(
 )
 sbt_versions=(
   0.13.15
-  1.0.3
   1.0.4
 )
 
