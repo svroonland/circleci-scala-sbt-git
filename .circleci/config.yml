@@ -10,8 +10,8 @@ jobs:
       - deploy:
           name: Publish to Docker Hub
           command: |
-            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+            # if [ "${CIRCLE_BRANCH}" == "master" ]; then
               apk --no-cache add docker bash
-              docker login -u ${DOCKER_LOGIN} -p ${DOCKER_PASSWORD}
+              # docker login -u ${DOCKER_LOGIN} -p ${DOCKER_PASSWORD}
               bash ./build_multiple.sh
-            fi
+            # fi
