@@ -1,6 +1,6 @@
-# Scala and sbt Dockerfile
+# Scala, sbt and Node Dockerfile
 
-[Scala](http://www.scala-lang.org), [sbt](http://www.scala-sbt.org) and [git](https://git-scm.com/) container.
+[Scala](http://www.scala-lang.org), [sbt](http://www.scala-sbt.org), [git](https://git-scm.com/) and node.js container.
 
 Useful for building in environments like CircleCI v2.
 
@@ -13,28 +13,29 @@ Useful for building in environments like CircleCI v2.
 ## Installation ##
 
 1. Install [Docker](https://www.docker.com)
-2. Pull [automated build](https://hub.docker.com/r/codestar/circleci-scala-sbt-git/) from public [Docker Hub Registry](https://hub.docker.com):
-3. See [tags](https://hub.docker.com/r/codestar/circleci-scala-sbt-git/tags/) for built specific versions (not the latest ones)
+2. Pull [automated build](https://hub.docker.com/r/codestar/circleci-scala-sbt-node-git/) from public [Docker Hub Registry](https://hub.docker.com):
+3. See [tags](https://hub.docker.com/r/codestar/circleci-scala-sbt-node-git/tags/) for built specific versions (not the latest ones)
 ```
-docker pull codestar/circleci-scala-sbt-git
+docker pull codestar/circleci-scala-sbt-node-git
 ```
 Alternatively, you can build an image from Dockerfile:
 ```
-docker build -t circleci-scala-sbt-git github.com/codestar/circleci-scala-sbt-git
+docker build -t circleci-scala-sbt-node-git github.com/codestar/circleci-scala-sbt-node-git
 ```
 Or with specific versions:
 ```
 docker build \
-  -t circleci-scala-sbt-git \
+  -t circleci-scala-sbt--nodegit \
   --build-arg SCALA_VERSION=2.12.3 \
   --build-arg SBT_VERSION=0.13.15 \
-  github.com/code-star/circleci-scala-sbt-git
+  --build-arg YARN_VERSION=1.3.2-r0 \
+  github.com/code-star/circleci-scala-sbt-node-git
 ```
 
 ## Usage ##
 
 ```
-docker run -it --rm spikerlabs/scala-sbt /bin/bash
+docker run -it --rm codestar/circleci-scala-sbt-node /bin/bash
 ```
 
 ### Example .circleci/config.yml:
@@ -45,7 +46,7 @@ jobs:
   build:
     working_directory: ~/my-project
     docker:
-      - image: codestar/circleci-scala-sbt-git:scala-2.12.2-sbt-0.13.15
+      - image: codestar/circleci-scala-sbt-node-git:scala-2.12.2-sbt-0.13.15
     steps:
       - checkout
 
@@ -95,4 +96,4 @@ Contributions via GitHub pull requests are gladly accepted from their original a
 
 This code is open source software licensed under the [Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0.html).
 
-This fork is based on [spikerlabs/scala-sbt](https://github.com/spikerlabs/scala-sbt) and [hseeberger/scala-sbt](https://github.com/hseeberger/scala-sbt).
+This fork is based on [spikerlabs/scala-sbt](https://github.com/spikerlabs/scala-sbt), [hseeberger/scala-sbt](https://github.com/hseeberger/scala-sbt) and [mhart/alpine-node](https://github.com/mhart/alpine-node)
