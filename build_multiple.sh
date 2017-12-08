@@ -16,7 +16,7 @@ for scala_version in ${scala_versions[@]}; do
       --build-arg SCALA_VERSION=${scala_version} \
       --build-arg SBT_VERSION=${sbt_version} \
       .
-    # docker push codestar/circleci-scala-sbt-node-git:${version}
+    docker push codestar/circleci-scala-sbt-node-git:${version}
     echo "Built ${version}"
   done
 done
