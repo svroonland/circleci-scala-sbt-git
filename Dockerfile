@@ -12,9 +12,10 @@ ARG SBT_VERSION
 
 ENV SCALA_VERSION ${SCALA_VERSION:-2.12.4}
 ENV SBT_VERSION ${SBT_VERSION:-0.13.15}
+ENV YARN_VERSION ${YARN_VERSION:-1.3.2-r0}
 
 RUN \
-  echo "building docker image for scala $SCALA_VERSION sbt $SBT_VERSION"
+  echo "building docker image for scala $SCALA_VERSION, sbt $SBT_VERSION, yarn $YARN_VERSION"
 
 RUN \
   echo "Setting up JDK and base system" && \
@@ -39,3 +40,7 @@ RUN \
   $(mv /usr/local/sbt-launcher-packaging-$SBT_VERSION /usr/local/sbt || true) \
   ln -s /usr/local/sbt/bin/* /usr/local/bin/ && \
   sbt sbtVersion
+
+RUN \
+  echo "Downloading and setting up Yarn ${YARN_VERSION}" && \ 
+  apk add --no-cache yarn=$YARN_VERSION
