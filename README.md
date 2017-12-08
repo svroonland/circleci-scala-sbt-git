@@ -1,6 +1,6 @@
 # Scala, sbt and Node Dockerfile
 
-[Scala](http://www.scala-lang.org), [sbt](http://www.scala-sbt.org), [git](https://git-scm.com/) and node.js container.
+[Scala](http://www.scala-lang.org), [sbt](http://www.scala-sbt.org), [git](https://git-scm.com/) and yarn
 
 Useful for building in environments like CircleCI v2.
 
